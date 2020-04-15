@@ -1,0 +1,37 @@
+version: '3.7'
+services:      
+  nginx:
+    image: nginx
+    ports:
+      - 80:80
+      - 9999:9999
+    volumes:
+      - $PWD/www:/var/www/html
+      - $PWD/conf/nginx:/etc/nginx
+      - $PWD/logs/nginx:/var/log/nginx
+    links:
+      - php:fpm
+  php:
+    build: .
+    expose:
+      - 9000
+    volumes:
+      - $PWD/conf/php/etc:/usr/local/etc
+      - $PWD/www:/var/www/html
+      - $PWD/logs/php:/var/log
+    links:
+      - mysql:mysql
+      - redis
+  mysql:
+    image: mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - $PWD/conf/mysql:/etc/mysql
+      - $PWD/logs/mysql:/var/log     
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+  redis:
+    image: redis
+    ports:
+    - 6379:6379
