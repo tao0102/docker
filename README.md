@@ -1,3 +1,4 @@
+在 docker-compose.yml 文件路径下 运行 docker-compose up -d
 查看容器
 docker ps -a
 
